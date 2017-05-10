@@ -1,0 +1,54 @@
+{
+  "user": [
+    {
+      "name": "Dean",
+      "age": 26,
+      "gender": "male",
+      "id": 10000
+    },
+    {
+      "id": 10001,
+      "name": "Sam",
+      "age": 30,
+      "gender": "male"
+    },
+    {
+      "name": "Castiel",
+      "age": 1000,
+      "gender": "male",
+      "id": 10002
+    },
+    {
+      "name": "Bobby",
+      "age": 50,
+      "gender": "male",
+      "id": 10003
+    },
+    {
+      "name": "Crowley",
+      "age": 500,
+      "gender": "male",
+      "id": 10004
+    }
+  ],
+  "book": [
+    {
+      "id": 10000,
+      "name": "Goblin",
+      "price": 9990,
+      "owner_id": 10000
+    },
+    {
+      "name": "Demon",
+      "price": 1990,
+      "owner_id": "10004",
+      "id": 10001
+    },
+    {
+      "name": "Angel",
+      "price": 200,
+      "owner_id": 10002,
+      "id": 10002
+    }
+  ]
+}
