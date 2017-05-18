@@ -1,27 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {Router, Route, hashHistory} from 'react-router';
-import HomeLayout from './layouts/HomeLayout'
-import HomePage from './pages/Home';
-import UserAddPage from './pages/UserAdd';
-import UserListPage from './pages/UserList';
-import UserEditPage from './pages/UserEdit';
-import BookListPage from './pages/BookList';
-import BookAddPage from './pages/BookAdd';
-import BookEditPage from './pages/BookEdit';
-import LoginPage from './pages/Login';
+import dva, {connect} from 'dva';
+import message from 'antd/lib/message';
+import {Router, Route, browserHistory } from 'dva/router';
 
-ReactDOM.render((
-    <Router history={hashHistory}>
-        <Route component={HomeLayout}>
-            <Route path="/" component={HomePage}/>
-            <Route path="/user/add" component={UserAddPage}/>
-            <Route path="/user/list" component={UserListPage}/>
-            <Route path="/user/edit/:id" component={UserEditPage}/>
-            <Route path="/book/list" component={BookListPage}/>
-            <Route path="/book/add" component={BookAddPage}/>
-            <Route path="/book/edit/:id" component={BookEditPage}/>
-        </Route>
-        <Route path="/login" component={LoginPage}/>
-    </Router>
-), document.getElementById('app'));
+// 1. Initialize
+const app = dva({
+    history: browserHistory,
+    onError: (e) => {
+        message.error(e.message);
+    }
+});
+
+// 2. Model
+app.model(require('./models/count'));
+
+// 3. Plugins ? View
+
+// 4. Router
+ app.router(require('./router'));
+
+
+// 5. Start
+app.start('#root');
