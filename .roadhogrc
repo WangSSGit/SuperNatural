@@ -4,6 +4,7 @@
       "development": {
         "extraBabelPlugins": [
           "dva-hmr",
+          "transform-runtime",
            [
               "import", {
                 "libraryName": "antd",

@@ -7,9 +7,9 @@ import { connect } from 'dva';
 
 const HomePage = ({dispatch}) => {
     return (
-        <HomeLayout>
+        <div>
             Welcome
-        </HomeLayout>
+        </div>
     )
 };
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import dva, {connect} from 'dva';
 import message from 'antd/lib/message';
+// import createLoading from 'dva-loading';
 import {Router, Route, browserHistory } from 'dva/router';
 
 // 1. Initialize
@@ -11,14 +12,16 @@ const app = dva({
     }
 });
 
-// 2. Model
-app.model(require('./models/count'));
+//2. use
+// app.use(createLoading());
 
-// 3. Plugins ? View
+// 3. Model
+app.model(require('./models/books'));
+app.model(require('./models/users'));
+
 
 // 4. Router
  app.router(require('./router'));
-
 
 // 5. Start
 app.start('#root');
