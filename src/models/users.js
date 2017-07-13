@@ -12,8 +12,8 @@ export default {
         }
     ],
     reducers: {
-        add(state, {user}){//question：第一个参数默认传的是什么？是当前module对应的state片段，还是整个app的state？
-            return state.concat([user]);
+        add(users, {user}){//question：第一个参数默认传的是什么？是当前module对应的state片段，还是整个app的state？
+            return users.concat([user]);
         },
         delete(users, {userId}){//question：如果我想在一个action中改变多个module中的state该怎么做？
             let index = users.findIndex((user) => {

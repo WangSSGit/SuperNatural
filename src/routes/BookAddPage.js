@@ -24,8 +24,7 @@ const BookAddPage = ({form, dispatch, userList}) => {
                 e.preventDefault();
                 validateFields((err, values) => {
                     if(!err){
-                        values.id = (new Date().getTime() + "").substr(5, 6);
-                        dispatch({type: 'books/add', book: values});
+                        dispatch({type: 'books/addBook', payload: values});
                     } else {
                         message.warn(JSON.stringify(err));
                     }

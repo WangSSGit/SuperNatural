@@ -2,11 +2,10 @@ import React from 'react';
 import dva, {connect} from 'dva';
 import message from 'antd/lib/message';
 // import createLoading from 'dva-loading';
-import {Router, Route, browserHistory } from 'dva/router';
+import {Router, Route} from 'dva/router';
 
 // 1. Initialize
 const app = dva({
-    history: browserHistory,
     onError: (e) => {
         message.error(e.message);
     }

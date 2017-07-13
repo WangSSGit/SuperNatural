@@ -3,99 +3,100 @@
  */
 import {message} from 'antd';
 import {routerRedux} from 'dva/router';
+import {get, post} from '../utils/request';
 
-const delay = timeout => {
-    new Promise(resolve => setTimeout(resolve, timeout)).then(() => {
-        console.log("promise test");
-    });
-};
+// const delay = timeout => {
+//     new Promise(resolve => setTimeout(resolve, timeout)).then(() => {
+//         console.log("promise test");
+//     });
+// };
 
 export default {
     namespace: 'books',
     state: [],
     reducers: {
-        update (state, {books}){//这里的两个参数，第一个是什么？第二个是什么？
-            console.log("state = " + state);
-            console.log("books = " + books);
-            return books;
+        add(state, {payload: book}){
+            return state.concat([book]);
         },
+        delete(state, {payload: bookId}){
+            let index = state.findIndex((book) => {
+                return book.id == bookId;
+            });
+            if (index != -1) {
+                state.splice(index, 1);
+            }
+            return state;
+        },
+        update(state, {payload: newBook}){
+            let oldBook = state.find((item) => {
+                return item.id == newBook.id;
+            });
+            oldBook = Object.assign(oldBook, newBook);
+            return state;
+        },
+        init(_, {payload: books}){
+            return books;
+        }
+    },
+    effects: {
+        *reload(action, {call, put}){
+            const data = yield call(get, "http://localhost:3000/book");
+            yield put({
+                type: "init",
+                payload: data
+            })
+        },
+        *addBook({payload: book}, {put, call}){
 
-        // add(books, {book}){
-        //     return books.concat([book]);
+            yield call(post, "http://localhost:3000/book", book);
+            yield put({type: 'reload'});
+        }
+        // *add({book}, {select, put, take, call}) {//这里的两个参数，第一个就是action，第二个是redux-saga中间件对象，带了n多方法
+        //     let books = yield select(state => state.books);//这里取的是什么state？当前module的state还是？
+        //     console.log("books = " + books);
+        //     console.log("book = " + book);
+        //     console.log("promise start");
+        //     yield call(delay, 2000);
+        //     console.log("promise end");
+        //     books = books.concat([book]);
+        //     yield put({
+        //         type: 'update',
+        //         books: books
+        //     });
+        //     yield put(routerRedux.push('/book/list'));
+        //     message.info("Add book success!!");
         // },
-        // delete(books, {bookId}){
+        // *delete({bookId}, {select, put, take}) {
+        //     let books = yield select(state => state.books);
         //     let index = books.findIndex((book) => {
         //         return book.id == bookId;
         //     });
-        //     if(index != -1){
+        //     if (index != -1) {
         //         books.splice(index, 1);
         //     }
-        //     return books;
+        //     yield put({
+        //         type: 'update',
+        //         books: books
+        //     });
         // },
-        // edit(books, {book}){
+        // *edit({book}, {select, put, take}) {
+        //     let books = yield select(state => state.books);
         //     let oldBook = books.find((item) => {
         //         return item.id == book.id;
         //     });
         //     oldBook = Object.assign(oldBook, book);
-        //     return books;
+        //     yield put({
+        //         type: 'update',
+        //         books: books
+        //     });
         // }
     },
-    effects: {
-        *add({book}, {select, put, take, call}) {//这里的两个参数，第一个就是action，第二个是redux-saga中间件对象，带了n多方法
-            let books = yield select(state => state.books);//这里取的是什么state？当前module的state还是？
-            console.log("books = " + books);
-            console.log("book = " + book);
-            console.log("promise start");
-            yield call(delay, 2000);
-            console.log("promise end");
-            books = books.concat([book]);
-            yield put({
-                type: 'update',
-                books: books
-            });
-            yield put(routerRedux.push('/book/list'));
-            message.info("Add book success!!");
-        },
-        *delete({bookId}, {select, put, take}) {
-            let books = yield select(state => state.books);
-            let index = books.findIndex((book) => {
-                return book.id == bookId;
-            });
-            if (index != -1) {
-                books.splice(index, 1);
-            }
-            yield put({
-                type: 'update',
-                books: books
-            });
-        },
-        *edit({book}, {select, put, take}) {
-            let books = yield select(state => state.books);
-            let oldBook = books.find((item) => {
-                return item.id == book.id;
-            });
-            oldBook = Object.assign(oldBook, book);
-            yield put({
-                type: 'update',
-                books: books
-            });
-        }
-    },
     subscriptions: {
-        setup({dispatch, history}){
-            console.log("setup");
-        },
-
-        initTime(test){
-            console.log("initTime");
-            console.log(test);
-        },
         function({dispatch, history}){
-            // 监听 history 变化，当进入 `/` 时触发 `load` action
-            return history.listen(({ pathname }) => {
-                if (pathname === '/book/add') {
-                    console.log("Welcome to add book page");
-                    // dispatch({ type: 'load' });
+            return history.listen((listenObj) => {
+                const {pathname} = listenObj;
+                if (pathname === '/book/list') {
+                    dispatch({type: "reload"});
                 }
             });
         }
