@@ -2,8 +2,8 @@
  * Created by admin on 2017/6/9.
  */
 import React from 'react';
-import { connect } from 'dva';
-import { Form, Input, InputNumber, Select, Button, message } from 'antd';
+import {connect} from 'dva';
+import {Form, Input, InputNumber, Select, Button, message} from 'antd';
 import {routerRedux} from 'dva/router';
 
 const FormItem = Form.Item;
@@ -24,10 +24,9 @@ const UserAddPage = ({form, dispatch}) => {
                 (e) => {
                     e.preventDefault();
                     validateFields((err, values) => {
-                        if(!err){
-                            values.id = (new Date().getTime() + "").substr(5, 6);
-                            dispatch({type: 'users/add', user:values});
-                            message.info("Add user success!!");
+                        if (!err) {
+                            dispatch({type: 'users/add', payload: values});
+                            dispatch(routerRedux.push("/user/list"));
                         } else {
                             message.warn(JSON.stringify(err));
                         }

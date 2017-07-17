@@ -3,9 +3,9 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { message, Table, Button, Popconfirm } from 'antd';
+import {message, Table, Button, Popconfirm} from 'antd';
 import {get, del} from '../utils/request'
-import { connect } from 'dva';
+import {connect} from 'dva';
 
 const BookListPage = ({dispatch, bookList}) => {
 
@@ -21,7 +21,7 @@ const BookListPage = ({dispatch, bookList}) => {
         {
             title: 'Price',
             dataIndex: 'price',
-            render: (text, record) => <span>&yen;{record.price / 100}</span>
+            render: (text, record) => <span>&yen;{record.price}</span>
         },
         {
             title: 'Owner ID',
@@ -35,8 +35,7 @@ const BookListPage = ({dispatch, bookList}) => {
                     <Popconfirm title="Are you sure you want to delete this book？"
                                 onConfirm={
                                     () => {
-                                        dispatch({type: 'books/delete', bookId: record.id});
-                                        message.info("Delete book success!!");
+                                        dispatch({type: 'books/delete', payload: record.id});
                                     }
                                 }>
                         <Button size="small">Delete</Button>

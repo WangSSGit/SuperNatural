@@ -1,60 +1,85 @@
 /**
  * Created by admin on 2017/5/16.
  */
-import {Router} from 'dva/router';
-import App from './routes/App';
-import HomePage from './routes/HomePage';
-import LoginPage from './routes/LoginPage';
+import React from 'react';
+import { Router } from 'dva/router';
 import HomeLayout from './layouts/HomeLayout';
-import BookAddPage from './routes/BookAddPage';
-import BookListPage from './routes/BookListPage';
-import UserListPage from './routes/UserListPage';
-import UserAddPage from './routes/UserAddPage';
 
-export default ({history}) => {
+const cached = {};
+function registerModel(app, model) {
+    if (!cached[model.namespace]) {
+        app.model(model);
+        cached[model.namespace] = 1;
+    }
+}
+
+export default ({history, app}) => {
     const routes = [
         {
             path: '/',
-            component: App,
-            indexRoute: {component: LoginPage},
-            childRoutes: [
-                {
-                    path: 'login',
-                    component: LoginPage
+            indexRoute:{
+                getComponent(nextState, cb){
+                    console.log("require LoginPage……");
+                    require.ensure([], (require) => {
+                        console.log("require ensure LoginPage……");
+                        cb(null, require('./routes/LoginPage'));
+                    });
                 },
+            },
+            childRoutes:[
                 {
                     component: HomeLayout,
-                    childRoutes: [
+                    childRoutes:[
                         {
                             path: 'home',
-                            component: HomePage
+                            getComponent(nextState, cb){
+                                console.log("require HomePage……");
+                                require.ensure([], (require) => {
+                                    console.log("require ensure HomePage……");
+                                    cb(null, require('./routes/HomePage'));
+                                });
+                            },
                         },
                         {
-                            path: 'book',
-                            childRoutes: [
-                                {
-                                    path: 'add',
-                                    component: BookAddPage
-                                },
-                                {
-                                    path: 'list',
-                                    component: BookListPage
-                                }
-                            ]
+                            path: 'book/add',
+                            getComponent(nextState, cb){
+                                require.ensure([], (require) => {
+                                    registerModel(app, require('./models/users'));
+                                    registerModel(app, require('./models/books'));
+                                    cb(null, require('./routes/BookAddPage'));
+                                });
+                            }
                         },
                         {
-                            path: 'user',
-                            childRoutes: [
-                                {
-                                    path: 'add',
-                                    component: UserAddPage
-                                },
-                                {
-                                    path: 'list',
-                                    component: UserListPage
-                                }
-                            ]
-                        }
+                            path: 'book/list',
+                            getComponent(nextState, cb){
+                                require.ensure([], (require) => {
+                                    registerModel(app, require('./models/users'));
+                                    registerModel(app, require('./models/books'));
+                                    cb(null, require('./routes/BookListPage'));
+                                });
+                            }
+                        },
+                        {
+                            path: 'user/add',
+                            name: "UserAddPage",
+                            getComponent(nextState, cb){
+                                require.ensure([], (require) => {
+                                    registerModel(app, require('./models/users'));
+                                    cb(null, require('./routes/UserAddPage'));
+                                });
+                            },
+                        },
+                        {
+                            path: 'user/list',
+                            name: "UserListPage",
+                            getComponent(nextState, cb){
+                                require.ensure([], (require) => {
+                                    registerModel(app, require('./models/users'));
+                                    cb(null, require('./routes/UserListPage'));
+                                });
+                            }
+                        },
                     ]
                 }
             ]

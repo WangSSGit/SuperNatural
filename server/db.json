@@ -33,12 +33,6 @@
   ],
   "book": [
     {
-      "id": 10000,
-      "name": "Goblin",
-      "price": 9990,
-      "owner_id": 10000
-    },
-    {
       "name": "Demon",
       "price": 1990,
       "owner_id": "10004",
@@ -51,13 +45,22 @@
       "id": 10002
     },
     {
+      "name": "Heaven",
+      "price": 1000,
+      "owner_id": 10002,
       "id": 10003
     },
     {
-      "name": "Heaven",
-      "price": 300,
-      "owner_id": "380482",
+      "name": "Goblin",
+      "price": 200,
+      "owner_id": 10004,
       "id": 10004
+    },
+    {
+      "name": "Monster",
+      "price": 200,
+      "owner_id": "10004",
+      "id": 10005
     }
   ]
 }

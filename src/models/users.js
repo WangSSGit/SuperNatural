@@ -1,37 +1,40 @@
 /**
  * Created by admin on 2017/6/12.
  */
+import {message} from 'antd';
+import {get, post, del} from '../utils/request';
+
 export default {
     namespace: 'users',
-    state: [
-        {
-            "name": "Dean Winchester",
-            "age": 32,
-            "gender": "male",
-            "id": "380482"
-        }
-    ],
+    state: [],
     reducers: {
-        add(users, {user}){//question：第一个参数默认传的是什么？是当前module对应的state片段，还是整个app的state？
-            return users.concat([user]);
-        },
-        delete(users, {userId}){//question：如果我想在一个action中改变多个module中的state该怎么做？
-            let index = users.findIndex((user) => {
-                return user.id == userId;
-            });
-            if(index != -1){
-                users.splice(index, 1);
-            }
-            return users;
-        },
-        edit(users, {user}){
-            let oldUser = users.find((item) => {
-                return item.id == user.id;
-            });
-            oldUser = Object.assign(oldUser, user);
-            return users;
+        update(state, {payload: newUsers}){
+            return newUsers
         }
     },
-    subscriptions: {},
-    effects: {}
+    effects: {
+        *reload(action, {call, put}){
+            const data = yield call(get, "http://localhost:3000/user");
+            yield put({
+                type: "update",
+                payload: data
+            })
+        },
+        *add({payload: user}, {call, put}){
+            yield call(post, "http://localhost:3000/user", user);
+            yield put({type: 'reload'});
+            message.info("Add user success!!");
+        },
+        *delete({payload: id}, {call, put}){
+            yield call(del, `http://localhost:3000/user/${id}`);
+            yield put({type: 'reload'});
+            message.info("Delete user success!!");
+        },
+    },
+    subscriptions: {
+        loadUsers({dispatch}){
+            dispatch({type: 'reload'});
+        }
+    },
+
 };

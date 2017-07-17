@@ -2,20 +2,15 @@
  * Created by admin on 2017/5/17.
  */
 import React from 'react';
-import HomeLayout from '../layouts/HomeLayout';
-import { connect } from 'dva';
+import {connect} from 'dva';
 
 const HomePage = ({dispatch}) => {
     return (
-        <div>
-            Welcome
-        </div>
+        <div>Welcome</div>
     )
 };
 
-HomePage.contextTypes = {
-
-};
+HomePage.contextTypes = {};
 
 const mapStateToProps = (state) => {
     return {state};

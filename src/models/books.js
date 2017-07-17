@@ -3,7 +3,7 @@
  */
 import {message} from 'antd';
 import {routerRedux} from 'dva/router';
-import {get, post} from '../utils/request';
+import {get, post, del} from '../utils/request';
 
 // const delay = timeout => {
 //     new Promise(resolve => setTimeout(resolve, timeout)).then(() => {
@@ -15,26 +15,7 @@ export default {
     namespace: 'books',
     state: [],
     reducers: {
-        add(state, {payload: book}){
-            return state.concat([book]);
-        },
-        delete(state, {payload: bookId}){
-            let index = state.findIndex((book) => {
-                return book.id == bookId;
-            });
-            if (index != -1) {
-                state.splice(index, 1);
-            }
-            return state;
-        },
-        update(state, {payload: newBook}){
-            let oldBook = state.find((item) => {
-                return item.id == newBook.id;
-            });
-            oldBook = Object.assign(oldBook, newBook);
-            return state;
-        },
-        init(_, {payload: books}){
+        update(state, {payload: books}){
             return books;
         }
     },
@@ -42,15 +23,21 @@ export default {
         *reload(action, {call, put}){
             const data = yield call(get, "http://localhost:3000/book");
             yield put({
-                type: "init",
+                type: "update",
                 payload: data
             })
         },
-        *addBook({payload: book}, {put, call}){
-
+        *add({payload: book}, {put, call}){
             yield call(post, "http://localhost:3000/book", book);
             yield put({type: 'reload'});
-        }
+            message.info("Add book success!!");
+        },
+        *delete({payload: id}, {put, call}){
+            yield call(del, `http://localhost:3000/book/${id}`);
+            yield put({type: 'reload'});
+            message.info("Delete book success!!");
+        },
+
         // *add({book}, {select, put, take, call}) {//这里的两个参数，第一个就是action，第二个是redux-saga中间件对象，带了n多方法
         //     let books = yield select(state => state.books);//这里取的是什么state？当前module的state还是？
         //     console.log("books = " + books);
@@ -92,13 +79,16 @@ export default {
         // }
     },
     subscriptions: {
-        function({dispatch, history}){
-            return history.listen((listenObj) => {
-                const {pathname} = listenObj;
-                if (pathname === '/book/list') {
-                    dispatch({type: "reload"});
-                }
-            });
+        loadBooks({dispatch}){
+            dispatch({type: "reload"});
+        },
+        historyListen({dispatch, history}){
+            // return history.listen((listenObj) => {
+            //     const {pathname} = listenObj;
+            //     if (pathname === '/book/list') {
+            //         dispatch({type: "reload"});
+            //     }
+            // });
         }
     }
 };

@@ -2,8 +2,8 @@
  * Created by admin on 2017/5/18.
  */
 import React from 'react';
-import { connect } from 'dva';
-import { Input, InputNumber, Form, Button, message, Select } from 'antd';
+import {connect} from 'dva';
+import {Input, InputNumber, Form, Button, message, Select} from 'antd';
 import {routerRedux} from 'dva/router';
 
 const FormItem = Form.Item;
@@ -23,8 +23,9 @@ const BookAddPage = ({form, dispatch, userList}) => {
             (e) => {
                 e.preventDefault();
                 validateFields((err, values) => {
-                    if(!err){
-                        dispatch({type: 'books/addBook', payload: values});
+                    if (!err) {
+                        dispatch({type: 'books/add', payload: values});
+                        dispatch(routerRedux.push("/book/list"));
                     } else {
                         message.warn(JSON.stringify(err));
                     }
@@ -72,7 +73,7 @@ const BookAddPage = ({form, dispatch, userList}) => {
                         <Select.Option value="">Please select a owner</Select.Option>
                         {userList.map((user) => {
                             return (
-                                <Select.Option key={user.id} value={user.id}>{user.name}</Select.Option>
+                                <Select.Option key={user.id}>{user.name}</Select.Option>
                             );
                         })}
                     </Select>

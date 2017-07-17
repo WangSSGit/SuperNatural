@@ -2,8 +2,8 @@
  * Created by admin on 2017/6/9.
  */
 import React from 'react';
-import { message, Table, Button, Popconfirm } from 'antd';
-import { connect } from 'dva';
+import {connect} from 'dva';
+import {message, Table, Button, Popconfirm} from 'antd';
 
 //这里可以传入什么参数？this.props
 const UserListPage = ({dispatch, userList}) => {
@@ -33,8 +33,7 @@ const UserListPage = ({dispatch, userList}) => {
                         <Popconfirm title="Are you sure you want to delete this user？"
                                     onConfirm={
                                         () => {
-                                            dispatch({type: 'users/delete', userId: record.id});
-                                            message.info("Delete user success!!");
+                                            dispatch({type: 'users/delete', payload: record.id});
                                         }
                                     }>
                             <Button size="small">Delete</Button>

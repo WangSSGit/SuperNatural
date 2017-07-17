@@ -17,12 +17,11 @@ const formLayout = {
     }
 };
 
-const BookEditor = ({dispatch, form})=>{
-    const {getFieldDecorator} = form;
-    // const {userList} = this.state;
-    const userList = [];
+const BookEditor = ({dispatch, form, userList = [], bookInfo = {}, onSubmit})=>{
+    const {name = "", price = "", ownerId = ""} = bookInfo;
+    const {getFieldDecorator, validateFields} = form;
     return (
-        <Form  onSubmit={(e) => console.log(e)} style={{width: '400px'}}>
+        <Form onSubmit={onSubmit} style={{width: '400px'}}>
             <FormItem label="Book Name:" {...formLayout}>
                 {getFieldDecorator('name', {
                     rules: [
@@ -31,7 +30,7 @@ const BookEditor = ({dispatch, form})=>{
                             message: "Please input a book name!!"
                         }
                     ]
-                })(<Input type="text"/>)}
+                })(<Input type="text" value = {name}/>)}
             </FormItem>
 
             <FormItem label="Price:" {...formLayout}>
@@ -49,7 +48,7 @@ const BookEditor = ({dispatch, form})=>{
                             message: "Please input a price between 0 and 300!!"
                         }
                     ]
-                })(<InputNumber/>)}
+                })(<InputNumber value = {price}/>)}
             </FormItem>
             <FormItem label="Owner:" {...formLayout}>
                 {getFieldDecorator('owner_id', {
@@ -60,20 +59,22 @@ const BookEditor = ({dispatch, form})=>{
                         }
                     ]
                 })(
-                    <select>
-                        <option value="">Please select a owner</option>
+                    <Select value = {ownerId}>
+                        <Select.Option value="">Please select a owner</Select.Option>
                         {userList.map((user) => {
                             return (
-                                <option key={user.id} value={user.id}>{user.name}</option>
+                                <Select.Option key={user.id} value={user.id}>{user.name}</Select.Option>
                             );
                         })}
-                    </select>
+                    </Select>
                 )}
             </FormItem>
             <br/>
-            <input type="submit" value="Submit"/>
+            <FormItem wrapperCol={{...formLayout.wrapperCol, offset: formLayout.labelCol.span}}>
+                <Button type="primary" htmlType="submit">Submit</Button>
+            </FormItem>
         </Form >
-    );
+    )
 };
 
 
