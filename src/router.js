@@ -61,8 +61,17 @@ export default ({history, app}) => {
                             }
                         },
                         {
+                            path: 'book/edit',
+                            getComponent(nextState, cb){
+                                require.ensure([], (require) => {
+                                    registerModel(app, require('./models/users'));
+                                    registerModel(app, require('./models/books'));
+                                    cb(null, require('./routes/BookEditPage'));
+                                });
+                            }
+                        },
+                        {
                             path: 'user/add',
-                            name: "UserAddPage",
                             getComponent(nextState, cb){
                                 require.ensure([], (require) => {
                                     registerModel(app, require('./models/users'));
@@ -71,8 +80,16 @@ export default ({history, app}) => {
                             },
                         },
                         {
+                            path: 'user/edit',
+                            getComponent(nextState, cb){
+                                require.ensure([], (require) => {
+                                    registerModel(app, require('./models/users'));
+                                    cb(null, require('./routes/UserEditPage'));
+                                });
+                            },
+                        },
+                        {
                             path: 'user/list',
-                            name: "UserListPage",
                             getComponent(nextState, cb){
                                 require.ensure([], (require) => {
                                     registerModel(app, require('./models/users'));

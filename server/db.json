@@ -1,12 +1,6 @@
 {
   "user": [
     {
-      "name": "Dean",
-      "age": 26,
-      "gender": "male",
-      "id": 10000
-    },
-    {
       "id": 10001,
       "name": "Sam",
       "age": 30,
@@ -29,19 +23,25 @@
       "age": 500,
       "gender": "male",
       "id": 10004
+    },
+    {
+      "name": "Dean Winchester",
+      "age": 32,
+      "gender": "male",
+      "id": 10005
     }
   ],
   "book": [
     {
       "name": "Demon",
-      "price": 1990,
+      "price": 2999,
       "owner_id": "10004",
       "id": 10001
     },
     {
       "name": "Angel",
-      "price": 200,
-      "owner_id": 10002,
+      "price": 2000,
+      "owner_id": "10002",
       "id": 10002
     },
     {

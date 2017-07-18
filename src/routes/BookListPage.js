@@ -4,8 +4,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {message, Table, Button, Popconfirm} from 'antd';
-import {get, del} from '../utils/request'
+import {requestGet, requestDel} from '../utils/request'
 import {connect} from 'dva';
+import {routerRedux} from 'dva/router';
 
 const BookListPage = ({dispatch, bookList}) => {
 
@@ -31,7 +32,11 @@ const BookListPage = ({dispatch, bookList}) => {
             title: 'Edit Book',
             render: (text, record) => (
                 <Button.Group type="ghost">
-                    <Button size="small" onClick={() => message.info("Edit book")}>Edit</Button>
+                    <Button size="small" onClick={
+                        () => {
+                            dispatch(routerRedux.push(`/book/edit?id=${record.id}`));
+                        }
+                    }>Edit</Button>
                     <Popconfirm title="Are you sure you want to delete this book？"
                                 onConfirm={
                                     () => {

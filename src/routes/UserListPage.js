@@ -4,6 +4,7 @@
 import React from 'react';
 import {connect} from 'dva';
 import {message, Table, Button, Popconfirm} from 'antd';
+import {routerRedux} from 'dva/router';
 
 //这里可以传入什么参数？this.props
 const UserListPage = ({dispatch, userList}) => {
@@ -29,7 +30,11 @@ const UserListPage = ({dispatch, userList}) => {
             render: (text, record) => {
                 return (
                     <Button.Group type="ghost">
-                        <Button size="small" onClick={() => message.info("Edit user")}>Edit</Button>
+                        <Button size="small" onClick={
+                            () => {
+                                dispatch(routerRedux.push(`/user/edit?id=${record.id}`));
+                            }
+                        }>Edit</Button>
                         <Popconfirm title="Are you sure you want to delete this user？"
                                     onConfirm={
                                         () => {

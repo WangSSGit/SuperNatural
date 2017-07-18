@@ -33,10 +33,10 @@ export default function request(method, url, body) {
     });
 }
 
-export const get = url => request('GET', url);
-export const post = (url, body) => request('POST', url, body);
-export const put = (url, body) => request('PUT', url, body);
-export const del = (url, body) => request('DELETE', url, body);
+export const requestGet = url => request('GET', url);
+export const requestPost = (url, body) => request('POST', url, body);
+export const requestPut = (url, body) => request('PUT', url, body);
+export const requestDel = (url, body) => request('DELETE', url, body);
 
 //获取URL地址的参数值。
 //name为URL参数名

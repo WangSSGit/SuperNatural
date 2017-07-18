@@ -7,7 +7,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Icon, Form, Input, Button, message} from 'antd';
-import {post} from '../utils/request';
+import {requestPost} from '../utils/request';
 import style from './login-page.less'
 import {routerRedux} from 'dva/router';
 import { connect } from 'dva';
